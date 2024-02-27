@@ -72,7 +72,9 @@ void setup()
 
   myservo.attach(12);
 
-  int ang = EEPROM.readShort(direccionEEPROM);
+  EEPROM.begin(512);
+  ang = EEPROM.read(direccionEEPROM);
+
   Serial.print("Valor leído de la EEPROM: ");
   Serial.println(ang);
 
@@ -152,6 +154,7 @@ void loop()
     }
 
     ang = SPosicion;
-    EEPROM.writeShort(direccionEEPROM, ang);
+    EEPROM.write(direccionEEPROM, ang); // Almacena el valor en la dirección dada
+    EEPROM.commit();                    // Guarda los cambios en la memoria EEPROM
   }
 }
