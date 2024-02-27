@@ -3,10 +3,12 @@
 #include "LittleFS.h"
 #include <WebSocketsServer.h>
 #include <ESP32Servo.h>
+#include <EEPROM.h>
 
 // Replace with your network credentials
 const char *ssid = "GWIFI";
 const char *password = "independenciaGatica38";
+int direccionEEPROM = 10;
 int ang = 0;
 
 AsyncWebServer server(80);
@@ -69,6 +71,10 @@ void setup()
   Serial.begin(115200);
 
   myservo.attach(12);
+
+  int ang = EEPROM.readShort(direccionEEPROM);
+  Serial.print("Valor leído de la EEPROM: ");
+  Serial.println(ang);
 
   // WiFi.softAP("Isa", "");
   // Serial.println("\nsoftAP");
@@ -146,5 +152,6 @@ void loop()
     }
 
     ang = SPosicion;
+    EEPROM.writeShort(direccionEEPROM, ang);
   }
 }
