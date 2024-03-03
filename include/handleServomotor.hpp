@@ -1,6 +1,9 @@
 
 int direccionEEPROM = 10;
 int ang = 0;
+int angIndice = 0;
+int angPulgarA = 0;
+int angPulgarB = 0;
 
 Servo myservo;
 Servo SpulgarA;
@@ -22,7 +25,7 @@ void initServos()
     Serial.println(ang);
 }
 
-void movementServo(Servo &servo, int SAngulo)
+void movementServo(Servo &servo, int SAngulo, int ang)
 {
 
     if (SAngulo > ang)
@@ -56,17 +59,19 @@ void selectServo(const char *Dedo, int SAngulo)
 
     if (strcmp(Dedo, "Indice") == 0)
     {
-
-        movementServo(myservo, SAngulo);
+        movementServo(myservo, SAngulo, angIndice);
+        angIndice = SAngulo;
     }
     if (strcmp(Dedo, "PulgarA") == 0)
     {
 
-        movementServo(SpulgarA, SAngulo);
+        movementServo(SpulgarA, SAngulo, angPulgarA);
+        angPulgarA = SAngulo;
     }
     if (strcmp(Dedo, "PulgarB") == 0)
     {
 
-        movementServo(SpulgarB, SAngulo);
+        movementServo(SpulgarB, SAngulo, angPulgarB);
+        angPulgarB = SAngulo;
     }
 }
