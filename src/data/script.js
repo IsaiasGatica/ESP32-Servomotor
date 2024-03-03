@@ -5,10 +5,6 @@ function onload(event) {
   initWebSocket();
 }
 
-function getValues() {
-  websocket.send("getValues");
-}
-
 function initWebSocket() {
   console.log("Trying to open a WebSocket connection…");
 
@@ -21,7 +17,6 @@ function initWebSocket() {
 
 function onOpen(event) {
   console.log("Connection opened");
-  getValues();
 }
 
 function onClose(event) {
@@ -31,15 +26,33 @@ function onClose(event) {
 
 function updateSliderPWM(element) {
   // Actualizar el valor del input de posición
-  var positionInput = document.getElementById("positionInput");
-
-  var sliderNumber = element.id.charAt(element.id.length - 1);
+  var positionInput = document.getElementById("positionIndice");
   var sliderValue = document.getElementById(element.id).value;
   positionInput.value = sliderValue + "°";
-  document.getElementById("sliderValue" + sliderNumber).innerHTML = sliderValue;
-  console.log(sliderValue);
-  websocket.send(sliderNumber + "s" + sliderValue.toString());
-  var sliderValue = slider.value + "°";
+  sendJson("Indice", sliderValue);
+}
+function updateSliderPA(element) {
+  // Actualizar el valor del input de posición
+  var positionInput = document.getElementById("inputPulgarA");
+  var sliderValue = document.getElementById(element.id).value;
+  positionInput.value = sliderValue + "°";
+  sendJson("PulgarA", sliderValue);
+}
+function updateSliderPB(element) {
+  // Actualizar el valor del input de posición
+  var positionInput = document.getElementById("inputPulgarB");
+  var sliderValue = document.getElementById(element.id).value;
+  positionInput.value = sliderValue + "°";
+  sendJson("PulgarB", sliderValue);
+}
+
+function sendJson(dedo, angulo) {
+  var PosicionDedo = {
+    dedo,
+    angulo,
+  };
+  var PosicionDedo = JSON.stringify(PosicionDedo);
+  websocket.send(PosicionDedo);
 }
 
 function onMessage(event) {
@@ -54,40 +67,60 @@ function onMessage(event) {
   }
 }
 
-// function updateSliderPWM(slider) {
-//   // Obtener el valor del slider
-
-// }
-
 function updateSliderFromInput(input) {
   // Obtener el valor del input de posición
 
   var positionValueSlider = input.value.replace("°", "");
 
   // Actualizar el valor del slider
-  var slider = document.getElementById("sliderValue1");
+  var slider = document.getElementById("sliIndice");
+  slider.value = positionValueSlider;
+}
+function updateSliderFromInputPA(input) {
+  // Obtener el valor del input de posición
+
+  var positionValueSlider = input.value.replace("°", "");
+
+  // Actualizar el valor del slider
+  var slider = document.getElementById("sliderPulgarA");
+  slider.value = positionValueSlider;
+}
+function updateSliderFromInputPB(input) {
+  // Obtener el valor del input de posición
+
+  var positionValueSlider = input.value.replace("°", "");
+
+  // Actualizar el valor del slider
+  var slider = document.getElementById("sliderPulgarB");
   slider.value = positionValueSlider;
 }
 
-var positionInput = document.getElementById("positionInput");
+var positionIndice = document.getElementById("positionIndice");
+addEventos(positionIndice);
+var positionPulgarA = document.getElementById("inputPulgarA");
+addEventos(positionPulgarA);
+var positionPulgarB = document.getElementById("inputPulgarB");
+addEventos(positionPulgarB);
 
-// Agregar el evento blur al input
-positionInput.addEventListener("blur", function () {
-  updatePositionValue();
-});
+function addEventos(id) {
+  id.addEventListener("blur", function () {
+    updatePositionValue(id);
+  });
 
-// Agregar el evento keydown para detectar la tecla Enter
-positionInput.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    updatePositionValue();
-  }
-});
+  // Agregar el evento keydown para detectar la tecla Enter
+  id.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      updatePositionValue(id);
+    }
+  });
+}
 
 var positionValueWithoutDegreeBU;
 
-function updatePositionValue() {
+function updatePositionValue(id) {
   // Obtener el valor actual del input
-  var positionValue = positionInput.value;
+
+  var positionValue = id.value;
 
   // Verificar si el valor no tiene el símbolo de grados
   if (!positionValue.endsWith("°")) {
@@ -95,16 +128,29 @@ function updatePositionValue() {
     positionValue += "°";
 
     // Actualizar el valor del input de posición
-    positionInput.value = positionValue;
+    id.value = positionValue;
   }
 
   // Eliminar el símbolo de grados para enviar el valor por websocket
   var positionValueWithoutDegree = positionValue.replace("°", "");
-  console.log(positionValueWithoutDegree);
 
   if (positionValueWithoutDegree != positionValueWithoutDegreeBU) {
-    websocket.send(1 + "s" + positionValueWithoutDegree.toString());
+    console.log(id.id);
+    switch (id.id) {
+      case "positionIndice":
+        sendJson("Indice", positionValueWithoutDegree.toString());
+        console.log("indice");
+        break;
+      case "inputPulgarA":
+        sendJson("PulgarA", positionValueWithoutDegree.toString());
+        console.log("pulgar");
+
+        break;
+      case "inputPulgarB":
+        sendJson("PulgarB", positionValueWithoutDegree.toString());
+        break;
+    }
+
     positionValueWithoutDegreeBU = positionValueWithoutDegree;
-    console.log(positionValueWithoutDegreeBU);
   }
 }

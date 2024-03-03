@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="bootstrap.min.css" rel="stylesheet" media="all" />
-    <script src="script.js"></script>
 
     <script>
       let socketConnection = new WebSocket(
@@ -24,14 +23,14 @@
 
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
           <div class="card text-bg-dark mb-3 mx-auto" style="max-width: 15rem">
-            <div class="card-header">Dedo Indice</div>
+            <div class="card-header">Indice</div>
             <div class="card-body text-center">
               <input
                 type="range"
                 onchange="updateSliderPWM(this)"
-                id="sliderValue1"
+                id="sliIndice"
                 min="25"
                 max="150"
                 step="5"
@@ -53,15 +52,91 @@
             <input
               type="text"
               class="form-control"
-              id="positionInput"
+              id="positionIndice"
               aria-label="Sizing example input"
               aria-describedby="inputGroup-sizing-sm"
               oninput="updateSliderFromInput(this)"
             />
           </div>
         </div>
+        <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+        <div class="col-12 col-md-4">
+          <div class="card text-bg-dark mb-3 mx-auto" style="max-width: 15rem">
+            <div class="card-header">Pulgar A</div>
+            <div class="card-body text-center">
+              <input
+                type="range"
+                onchange="updateSliderPA(this)"
+                id="sliderPulgarA"
+                min="25"
+                max="150"
+                step="5"
+                value="0"
+                class="slider"
+              />
+            </div>
+            <!-- <div class="card-footer bg-transparent d-flex align-items-center">
+              <p class="state">Posición: <span id="sliderValue1"></span>&deg</p>
+            </div> -->
+          </div>
+          <div
+            class="input-group input-group mb-3 mx-auto"
+            style="max-width: 15rem"
+          >
+            <span class="input-group-text" id="inputGroup-sizing-sm"
+              >Posición</span
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputPulgarA"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-sm"
+              oninput="updateSliderFromInputPA(this)"
+            />
+          </div>
+        </div>
+        <!-- ------------------------------------------------------------------------------------------------------------------------------------------ -->
+        <div class="col-12 col-md-4">
+          <div class="card text-bg-dark mb-3 mx-auto" style="max-width: 15rem">
+            <div class="card-header">Pulgar B</div>
+            <div class="card-body text-center">
+              <input
+                type="range"
+                onchange="updateSliderPB(this)"
+                id="sliderPulgarB"
+                min="25"
+                max="150"
+                step="5"
+                value="0"
+                class="slider"
+              />
+            </div>
+            <!-- <div class="card-footer bg-transparent d-flex align-items-center">
+              <p class="state">Posición: <span id="sliderValue1"></span>&deg</p>
+            </div> -->
+          </div>
+          <div
+            class="input-group input-group mb-3 mx-auto"
+            style="max-width: 15rem"
+          >
+            <span class="input-group-text" id="inputGroup-sizing-sm"
+              >Posición</span
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="inputPulgarB"
+              aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-sm"
+              oninput="updateSliderFromInputPB(this)"
+            />
+          </div>
+        </div>
       </div>
     </div>
+    <script src="script.js"></script>
+
     <script src="bootstrap.bundle.min.js"></script>
   </body>
   <style>
