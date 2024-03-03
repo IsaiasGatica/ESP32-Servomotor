@@ -59,4 +59,14 @@ void selectServo(const char *Dedo, int SAngulo)
 
         movementServo(myservo, SAngulo);
     }
+    if (strcmp(Dedo, "PulgarA") == 0)
+    {
+
+        movementServo(SpulgarA, SAngulo);
+    }
+    if (strcmp(Dedo, "PulgarB") == 0)
+    {
+
+        movementServo(SpulgarB, SAngulo);
+    }
 }
